@@ -27,7 +27,9 @@ class SortSheetFragment : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_sort_sheet, container, false)
-        view.cancel.setOnClickListener {
+        view.reset.setOnClickListener {
+            // reset
+            listener.onReset()
             dismiss()
         }
         view.apply.setOnClickListener {
@@ -68,6 +70,7 @@ class SortSheetFragment : BottomSheetDialogFragment() {
 
     interface ButtonClickListener {
         fun onChooseSortType(type: SortType)
+        fun onReset()
     }
 
 }

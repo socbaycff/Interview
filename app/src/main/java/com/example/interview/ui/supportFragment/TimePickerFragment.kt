@@ -16,6 +16,6 @@ class TimePickerFragment: DialogFragment() {
         val hour = c.get(Calendar.HOUR_OF_DAY)
         val minute = c.get(Calendar.MINUTE)
 
-        return TimePickerDialog(activity, activity as TimePickerDialog.OnTimeSetListener, hour,minute,DateFormat.is24HourFormat(activity))
+        return TimePickerDialog(activity, activity as TimePickerDialog.OnTimeSetListener, hour,minute,true)
     }
 }

@@ -58,13 +58,13 @@
     </RadioGroup>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/cancel"
+        android:id="@+id/reset"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="154dp"
         android:layout_height="52dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="212dp"
-        android:text="Cancel"
+        android:text="Reset"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
 

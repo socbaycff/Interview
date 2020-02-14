@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -20,6 +22,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    dataBinding {
+        enabled = true
     }
 }
 
@@ -40,4 +46,11 @@ dependencies {
     //
 
     implementation 'com.google.android.gms:play-services-vision:19.0.0'
+
+    //dagger
+    implementation 'com.google.dagger:dagger:2.25.4'
+    kapt 'com.google.dagger:dagger-compiler:2.25.4'
+    implementation 'com.google.dagger:dagger-android:2.25.4'
+    implementation 'com.google.dagger:dagger-android-support:2.25.4'
+    kapt 'com.google.dagger:dagger-android-processor:2.25.4'
 }
