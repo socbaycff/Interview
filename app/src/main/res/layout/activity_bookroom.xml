@@ -10,11 +10,11 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="#FFFFFF"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <LinearLayout
@@ -22,11 +22,13 @@
             android:layout_height="match_parent">
 
             <TextView
+                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Book A Room"
+                android:background="#FFFFFF"
+                android:backgroundTint="#FFFFFF"
                 android:gravity="center"
-                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                android:text="Book A Room"
                 android:textSize="30sp" />
 
         </LinearLayout>
@@ -82,9 +84,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/roomList"
         android:layout_width="413dp"
-        android:layout_height="430dp"
+        android:layout_height="0dp"
         android:layout_marginTop="1dp"
         android:layout_marginEnd="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -97,6 +100,7 @@
         android:layout_height="36dp"
         android:layout_marginTop="6dp"
         android:layout_marginEnd="16dp"
+        android:backgroundTint="#00FFFFFF"
         android:drawableEnd="@drawable/ic_sort_black_24dp"
         android:onClick="sorting"
         android:text="Sort"
