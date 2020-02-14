@@ -6,9 +6,10 @@ import android.content.Context
 import android.icu.util.Calendar
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
+import javax.inject.Inject
 
 // Fragment for date picker
-class DatePickerFragment : DialogFragment() {
+class DatePickerFragment @Inject constructor(): DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)

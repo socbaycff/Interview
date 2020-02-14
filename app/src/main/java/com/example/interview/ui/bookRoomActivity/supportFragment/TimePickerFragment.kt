@@ -6,9 +6,10 @@ import android.app.TimePickerDialog
 import android.icu.util.Calendar
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
+import javax.inject.Inject
 
 // Fragment for time picker
-class TimePickerFragment : DialogFragment() {
+class TimePickerFragment @Inject constructor(): DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val c = Calendar.getInstance()

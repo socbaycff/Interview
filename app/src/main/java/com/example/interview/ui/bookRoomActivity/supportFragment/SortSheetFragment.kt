@@ -14,10 +14,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.fragment_sort_sheet.*
 import kotlinx.android.synthetic.main.fragment_sort_sheet.view.*
+import javax.inject.Inject
 
 
 // bottom sheet fragment
-class SortSheetFragment : BottomSheetDialogFragment() {
+class SortSheetFragment @Inject constructor(): BottomSheetDialogFragment() {
     private var listener: ButtonClickListener? = null
 
     override fun onCreateView(

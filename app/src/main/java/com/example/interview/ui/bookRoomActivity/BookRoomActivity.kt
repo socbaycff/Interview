@@ -38,6 +38,18 @@ class BookRoomActivity : DaggerAppCompatActivity(), DatePickerDialog.OnDateSetLi
     lateinit var providerFactory: ViewModelProviderFactory
     private lateinit var viewModel: BookRoomViewModel
 
+    @Inject
+    lateinit var datePickerFragment: DatePickerFragment
+
+    @Inject
+    lateinit var timePickerFragment: TimePickerFragment
+
+    @Inject
+    lateinit var sortSheetFragment: SortSheetFragment
+
+    @Inject
+    lateinit var roomListAdapter: RoomListAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bookroom)
@@ -46,7 +58,7 @@ class BookRoomActivity : DaggerAppCompatActivity(), DatePickerDialog.OnDateSetLi
         viewModel = ViewModelProvider(this, providerFactory).get(BookRoomViewModel::class.java)
         viewModel.setup()
 
-        roomList.adapter = RoomListAdapter("0")
+        roomList.adapter = roomListAdapter
         roomList.layoutManager = LinearLayoutManager(this)
 
 
@@ -54,13 +66,11 @@ class BookRoomActivity : DaggerAppCompatActivity(), DatePickerDialog.OnDateSetLi
 
     private fun setup() {
         DateEditText.editText!!.setOnClickListener {
-            val datePicker = DatePickerFragment()
-            datePicker.show(supportFragmentManager, "date picker")
+            datePickerFragment.show(supportFragmentManager, "date picker")
         }
 
         TimeEditText.editText!!.setOnClickListener {
-            val datePicker = TimePickerFragment()
-            datePicker.show(supportFragmentManager, "time picker")
+            timePickerFragment.show(supportFragmentManager, "time picker")
         }
     }
 
@@ -100,7 +110,6 @@ class BookRoomActivity : DaggerAppCompatActivity(), DatePickerDialog.OnDateSetLi
         val time = "$hourString:$minuteString"
 
         TimeEditText.editText!!.setText(time)
-
         loadRoomListWithTime(time)
     }
 
@@ -111,16 +120,18 @@ class BookRoomActivity : DaggerAppCompatActivity(), DatePickerDialog.OnDateSetLi
             if (adapter.roomList.isEmpty()) {
                 adapter.addAll(it)
                 adapter.defaultRoomList = it.toList() // default list for reset
+                adapter.setTime(time)
+            } else {
+                adapter.setTime(time)// set tim for availability process
+                adapter.notifyDataSetChanged()
             }
-            adapter.setTime(time) // set tim for availability process
+
         })
 
     }
 
 
     fun openSortSheet(@Suppress("UNUSED_PARAMETER") v: View) {
-        val sortSheetFragment =
-            SortSheetFragment()
         sortSheetFragment.show(supportFragmentManager, "openSortSheet")
     }
 
@@ -132,7 +143,7 @@ class BookRoomActivity : DaggerAppCompatActivity(), DatePickerDialog.OnDateSetLi
         when (type) {
             SortType.AVAILABILITY -> {
 
-                val chooseTime = adapter.chooseTime
+                val chooseTime = adapter.getTime()
                 list = adapter.roomList.sortedBy {
                     !CheckAvai.check(
                         chooseTime,
@@ -154,9 +165,9 @@ class BookRoomActivity : DaggerAppCompatActivity(), DatePickerDialog.OnDateSetLi
         adapter.notifyDataSetChanged()
     }
 
-    // event handler choose reset filter
+    // event handler choose reset sort
     override fun onReset() {
-        (roomList.adapter as RoomListAdapter).resetFilter()
+        (roomList.adapter as RoomListAdapter).resetSort()
         Toast.makeText(applicationContext, "Reset", Toast.LENGTH_SHORT).show()
     }
 

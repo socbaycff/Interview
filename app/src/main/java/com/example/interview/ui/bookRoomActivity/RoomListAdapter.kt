@@ -9,9 +9,10 @@ import com.example.interview.models.Availability
 import com.example.interview.models.Room
 import com.example.interview.utils.CheckAvai
 import kotlinx.android.synthetic.main.room_item.view.*
+import javax.inject.Inject
 
 
-class RoomListAdapter(var chooseTime: String) : RecyclerView.Adapter<RoomHolder>() {
+class RoomListAdapter @Inject constructor(private var chooseTime: String) : RecyclerView.Adapter<RoomHolder>() {
     var roomList: List<Room> = arrayListOf()
     lateinit var defaultRoomList: List<Room> // store list for reset after sort
 
@@ -42,10 +43,10 @@ class RoomListAdapter(var chooseTime: String) : RecyclerView.Adapter<RoomHolder>
 
     fun setTime(time: String) {
         chooseTime = time
-        notifyDataSetChanged()
     }
+    fun getTime() = chooseTime
 
-    fun resetFilter() {
+    fun resetSort() {
         roomList = defaultRoomList.toList()
         notifyDataSetChanged()
     }
