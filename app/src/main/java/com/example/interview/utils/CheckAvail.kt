@@ -1,6 +1,6 @@
 package com.example.interview.utils
 
-class CheckAvai {
+class CheckAvail {
     companion object {
         // getClosetTime
         fun getCloseTime(time: String): String {
@@ -34,11 +34,10 @@ class CheckAvai {
                 else -> "19:30" // below 8:00 use last night to check
             }
 
-
         }
 
         // helper function to compare 2 string
-        fun String.higher(time: String): Boolean {
+        private fun String.higher(time: String): Boolean {
             return this > time
         }
 

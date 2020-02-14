@@ -23,7 +23,7 @@ import com.example.interview.ui.bookRoomActivity.supportFragment.SortSheetFragme
 import com.example.interview.ui.bookRoomActivity.supportFragment.SortType
 import com.example.interview.ui.bookRoomActivity.supportFragment.TimePickerFragment
 import com.example.interview.ui.scanQRActivity.ScannedBarcodeActivity
-import com.example.interview.utils.CheckAvai
+import com.example.interview.utils.CheckAvail
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_bookroom.*
 import javax.inject.Inject
@@ -142,7 +142,7 @@ class BookRoomActivity : DaggerAppCompatActivity(), DatePickerDialog.OnDateSetLi
         when (type) {
             SortType.AVAILABILITY -> {
 
-                val chooseTime = CheckAvai.getCloseTime(adapter.getTime())
+                val chooseTime = CheckAvail.getCloseTime(adapter.getTime())
                 list = adapter.roomList.sortedBy {
                     it.availability?.get(chooseTime) != "1"
 
