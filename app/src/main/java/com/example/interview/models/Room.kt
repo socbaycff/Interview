@@ -17,6 +17,6 @@ class Room {
     var level: Int? = null
     @SerializedName("availability")
     @Expose
-    var availability: Availability? = null
+    var availability: MutableMap<String, String>? = null
 
 }

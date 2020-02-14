@@ -17,7 +17,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.interview.R
 import com.example.interview.di.ViewModelProviderFactory
-import com.example.interview.models.Availability
 import com.example.interview.models.Room
 import com.example.interview.ui.bookRoomActivity.supportFragment.DatePickerFragment
 import com.example.interview.ui.bookRoomActivity.supportFragment.SortSheetFragment
@@ -143,12 +142,10 @@ class BookRoomActivity : DaggerAppCompatActivity(), DatePickerDialog.OnDateSetLi
         when (type) {
             SortType.AVAILABILITY -> {
 
-                val chooseTime = adapter.getTime()
+                val chooseTime = CheckAvai.getCloseTime(adapter.getTime())
                 list = adapter.roomList.sortedBy {
-                    !CheckAvai.check(
-                        chooseTime,
-                        it.availability as Availability
-                    )
+                    it.availability?.get(chooseTime) != "1"
+
                 }
                 Toast.makeText(applicationContext, "sorted by avail ", Toast.LENGTH_SHORT).show()
             }

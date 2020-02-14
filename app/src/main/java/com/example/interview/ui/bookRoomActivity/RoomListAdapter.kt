@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.interview.R
-import com.example.interview.models.Availability
 import com.example.interview.models.Room
 import com.example.interview.utils.CheckAvai
 import kotlinx.android.synthetic.main.room_item.view.*
@@ -17,6 +16,7 @@ class RoomListAdapter @Inject constructor(private var chooseTime: String) : Recy
     lateinit var defaultRoomList: List<Room> // store list for reset after sort
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomHolder {
+     //   val binding = RoomItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         val view = LayoutInflater.from(parent.context).inflate(R.layout.room_item, parent, false)
         return RoomHolder(view)
     }
@@ -31,7 +31,7 @@ class RoomListAdapter @Inject constructor(private var chooseTime: String) : Recy
             room.name,
             room.level,
             room.capacity,
-            CheckAvai.check(chooseTime, room.availability as Availability)
+            room.availability?.get(CheckAvai.getCloseTime(chooseTime)) == "1"
         )
     }
 
@@ -54,7 +54,7 @@ class RoomListAdapter @Inject constructor(private var chooseTime: String) : Recy
 }
 
 
-class RoomHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class RoomHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     // bind into view
     fun bind(name: String?, level: Int?, capacity: Int?, isAvail: Boolean) {
