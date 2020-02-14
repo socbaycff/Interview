@@ -1,21 +1,19 @@
-package com.example.interview.ui
+package com.example.interview.ui.scanResultActivity
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.webkit.URLUtil
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import com.example.interview.R
-import kotlinx.android.synthetic.main.activity_book.*
+import kotlinx.android.synthetic.main.activity_booking_result.*
 
 
-class BookActivity : AppCompatActivity() {
+class ScanResultActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_book)
+        setContentView(R.layout.activity_booking_result)
         val webView = webView
 
         webView.webViewClient = object : WebViewClient() {
@@ -35,6 +33,7 @@ class BookActivity : AppCompatActivity() {
                 return false
             }
         }
+
         webView.loadUrl(intent.getStringExtra("url"))
     }
 }

@@ -2,7 +2,7 @@ package com.example.interview.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
+@SuppressWarnings("unused")
 public class Availability {
 
     @SerializedName("08:00")

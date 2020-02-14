@@ -1,9 +1,8 @@
-package com.example.interview.ui;
+package com.example.interview.ui.scanQRActivity;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
@@ -18,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.example.interview.R;
+import com.example.interview.ui.scanResultActivity.ScanResultActivity;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -56,9 +56,9 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (intentData.length() > 0) {
-                    Intent intent = new Intent(ScannedBarcodeActivity.this, BookActivity.class);
-                    Log.i("ddddddddddd",intentData);
-                    intent.putExtra("url",intentData);
+                    Intent intent = new Intent(ScannedBarcodeActivity.this, ScanResultActivity.class);
+                    Log.i("ddddddddddd", intentData);
+                    intent.putExtra("url", intentData);
                     startActivity(intent);
 
                 }

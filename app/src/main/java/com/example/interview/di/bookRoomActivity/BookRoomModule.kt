@@ -1,6 +1,6 @@
-package com.example.interview.di.BookRoom
+package com.example.interview.di.bookRoomActivity
 
-import com.example.interview.ui.BookRoomActivity
+import com.example.interview.ui.bookRoomActivity.BookRoomActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
