@@ -12,10 +12,12 @@ import android.view.View
 import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.interview.R
+import com.example.interview.databinding.ActivityBookroomBinding
 import com.example.interview.di.ViewModelProviderFactory
 import com.example.interview.models.Room
 import com.example.interview.ui.bookRoomActivity.supportFragment.DatePickerFragment
@@ -49,29 +51,41 @@ class BookRoomActivity : DaggerAppCompatActivity(), DatePickerDialog.OnDateSetLi
     @Inject
     lateinit var roomListAdapter: RoomListAdapter
 
+    lateinit var binding: ActivityBookroomBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_bookroom)
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_bookroom)
         setSupportActionBar(toolbar)
-        setup()
         viewModel = ViewModelProvider(this, providerFactory).get(BookRoomViewModel::class.java)
         viewModel.setup()
+        binding.viewmodel = viewModel
+        binding.lifecycleOwner = this
 
+        //still not binding recycler
         roomList.adapter = roomListAdapter
         roomList.layoutManager = LinearLayoutManager(this)
 
-
     }
 
-    private fun setup() {
-        DateEditText.editText!!.setOnClickListener {
+    fun chooseDate(v: View) {
+        if (!datePickerFragment.isAdded) {
             datePickerFragment.show(supportFragmentManager, "date picker")
         }
+    }
 
-        TimeEditText.editText!!.setOnClickListener {
+    fun chooseTime(v: View) {
+        if (!timePickerFragment.isAdded) {
             timePickerFragment.show(supportFragmentManager, "time picker")
         }
     }
+
+    fun openSortSheet(@Suppress("UNUSED_PARAMETER") v: View) {
+        if (!sortSheetFragment.isAdded) {
+            sortSheetFragment.show(supportFragmentManager, "openSortSheet")
+        }
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.option_menu, menu)
@@ -97,7 +111,7 @@ class BookRoomActivity : DaggerAppCompatActivity(), DatePickerDialog.OnDateSetLi
         c.set(Calendar.MONTH, month)
         c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
         val currentDateString = DateFormat.getDateInstance(DateFormat.FULL).format(c.time)
-        DateEditText.editText!!.setText(currentDateString)
+        viewModel.dateText.value = currentDateString
     }
 
     // event handler for time picker
@@ -108,11 +122,12 @@ class BookRoomActivity : DaggerAppCompatActivity(), DatePickerDialog.OnDateSetLi
 
         val time = "$hourString:$minuteString"
 
-        TimeEditText.editText!!.setText(time)
+        viewModel.timeText.value = time
         loadRoomListWithTime(time)
     }
 
     private fun loadRoomListWithTime(time: String) {
+        // still not binding recycler
         viewModel.listRoom.observe(this, Observer {
 
             val adapter = roomList.adapter as RoomListAdapter
@@ -130,9 +145,6 @@ class BookRoomActivity : DaggerAppCompatActivity(), DatePickerDialog.OnDateSetLi
     }
 
 
-    fun openSortSheet(@Suppress("UNUSED_PARAMETER") v: View) {
-        sortSheetFragment.show(supportFragmentManager, "openSortSheet")
-    }
 
     // event handler after choose sort type
     override fun onChooseSortType(type: SortType) {
@@ -166,18 +178,6 @@ class BookRoomActivity : DaggerAppCompatActivity(), DatePickerDialog.OnDateSetLi
     override fun onReset() {
         (roomList.adapter as RoomListAdapter).resetSort()
         Toast.makeText(applicationContext, "Reset", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString("Date", DateEditText.editText?.text.toString())
-        outState.putString("Time", TimeEditText.editText?.text.toString())
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        DateEditText.editText?.setText(savedInstanceState.getString("Date"))
-        TimeEditText.editText?.setText(savedInstanceState.getString("Time"))
     }
 
 }

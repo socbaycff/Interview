@@ -1,4 +1,4 @@
-package com.example.interview.models
+package com.example.interview.respository.local
 
 import androidx.room.Dao
 

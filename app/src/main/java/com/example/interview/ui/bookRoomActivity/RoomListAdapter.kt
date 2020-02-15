@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.interview.R
 import com.example.interview.models.Room
 import com.example.interview.utils.CheckAvail
-import kotlinx.android.synthetic.main.room_item.view.*
+import kotlinx.android.synthetic.main.room_list_item.view.*
 import javax.inject.Inject
 
 
@@ -17,7 +17,7 @@ class RoomListAdapter @Inject constructor(private var chooseTime: String) : Recy
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomHolder {
      //   val binding = RoomItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.room_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.room_list_item, parent, false)
         return RoomHolder(view)
     }
 

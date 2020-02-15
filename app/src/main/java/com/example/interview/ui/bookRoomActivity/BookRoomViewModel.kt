@@ -15,8 +15,10 @@ class BookRoomViewModel @Inject constructor() : ViewModel() {
     @Inject
     lateinit var restAPIUtil: RestAPIUtil
 
-
     var listRoom = MutableLiveData<List<Room>>()
+    var dateText = MutableLiveData<String>()
+    var timeText = MutableLiveData<String>()
+
 
     fun setup() {
         restAPIUtil.getRestRoomService().getRoom().enqueue(object : Callback<List<Room>?> {
@@ -31,6 +33,5 @@ class BookRoomViewModel @Inject constructor() : ViewModel() {
 
 
     }
-
 
 }
