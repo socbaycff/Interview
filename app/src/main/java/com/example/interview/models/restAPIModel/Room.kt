@@ -1,10 +1,10 @@
-package com.example.interview.models
+package com.example.interview.models.restAPIModel
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 
-class Room {
+class Room: iRoom {
 
     @SerializedName("name")
     @Expose

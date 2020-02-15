@@ -2,12 +2,10 @@ package com.example.interview.respository.remote
 
 import javax.inject.Inject
 
-class RestAPIUtil @Inject constructor() {
+class RestAPIUtil @Inject constructor(var roomService: RoomService): iRestAPIUtil {
 
-    @Inject
-     lateinit var roomService: RoomService
 
-    fun getRestRoomService(): RoomService {
+    override fun getRestServices(): RoomService {
         return roomService
     }
 }

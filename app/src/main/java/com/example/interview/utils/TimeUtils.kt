@@ -1,6 +1,6 @@
 package com.example.interview.utils
 
-class CheckAvail {
+class TimeUtils {
     companion object {
         // getClosetTime
         fun getCloseTime(time: String): String {

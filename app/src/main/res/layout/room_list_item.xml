@@ -6,7 +6,7 @@
     <data>
         <variable
             name="room"
-            type="com.example.interview.models.Room" />
+            type="com.example.interview.models.restAPIModel.Room" />
     </data>
 
     <androidx.cardview.widget.CardView

@@ -17,7 +17,5 @@ abstract class BookRoomVMModule {
     @ViewModelKey( BookRoomViewModel::class )
     abstract fun bindMainViewModel( mainViewModel: BookRoomViewModel): ViewModel
 
-    @Binds
-    abstract fun bindViewModelFactory(viewModelFactory: ViewModelProviderFactory): ViewModelProvider.Factory
 
 }

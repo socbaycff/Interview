@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.interview.R
-import com.example.interview.models.Room
-import com.example.interview.utils.CheckAvail
+import com.example.interview.models.restAPIModel.Room
+import com.example.interview.utils.TimeUtils
 import kotlinx.android.synthetic.main.room_list_item.view.*
 import javax.inject.Inject
 
@@ -31,7 +31,7 @@ class RoomListAdapter @Inject constructor(private var chooseTime: String) : Recy
             room.name,
             room.level,
             room.capacity,
-            room.availability?.get(CheckAvail.getCloseTime(chooseTime)) == "1"
+            room.availability?.get(TimeUtils.getCloseTime(chooseTime)) == "1"
         )
     }
 
