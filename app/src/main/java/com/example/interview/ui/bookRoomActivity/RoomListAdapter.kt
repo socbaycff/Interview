@@ -35,19 +35,47 @@ class RoomListAdapter @Inject constructor(private var chooseTime: String) : Recy
         )
     }
 
-    fun addAll(list: List<Room>) {
+    private fun addAll(list: List<Room>) {
         roomList = list
         notifyDataSetChanged()
 
     }
 
-    fun setTime(time: String) {
+    private fun setTime(time: String) {
         chooseTime = time
     }
     fun getTime() = chooseTime
 
     fun resetSort() {
         roomList = defaultRoomList.toList()
+        notifyDataSetChanged()
+    }
+
+    fun onTimeChooseSet(rooms: List<Room>, time: String) {
+        if (roomList.isEmpty()) {
+            addAll(rooms)
+            defaultRoomList = roomList.toList()
+            setTime(time)
+        } else {
+            setTime(time)
+            notifyDataSetChanged()
+        }
+    }
+
+    fun sortByCapacity() {
+        val list = roomList.sortedBy { it.capacity }.asReversed()
+        roomList = list
+        notifyDataSetChanged()
+    }
+
+    fun sortByAvailability() {
+        val chooseTime = TimeUtils.getCloseTime(getTime())
+         val list = roomList.sortedBy {
+            it.availability?.get(chooseTime) != "1"
+
+        }
+
+        roomList = list
         notifyDataSetChanged()
     }
 

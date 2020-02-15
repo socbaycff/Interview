@@ -21,13 +21,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.interview.R
 import com.example.interview.databinding.ActivityBookroomBinding
 import com.example.interview.di.ViewModelProviderFactory
-import com.example.interview.models.restAPIModel.Room
 import com.example.interview.ui.bookRoomActivity.supportFragment.DatePickerFragment
 import com.example.interview.ui.bookRoomActivity.supportFragment.SortSheetFragment
 import com.example.interview.ui.bookRoomActivity.supportFragment.SortType
 import com.example.interview.ui.bookRoomActivity.supportFragment.TimePickerFragment
 import com.example.interview.ui.scanQRActivity.ScannedBarcodeActivity
-import com.example.interview.utils.TimeUtils
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_bookroom.*
 import javax.inject.Inject
@@ -52,7 +50,7 @@ class BookRoomActivity : DaggerAppCompatActivity(), DatePickerDialog.OnDateSetLi
     @Inject
     lateinit var roomListAdapter: RoomListAdapter
 
-    lateinit var binding: ActivityBookroomBinding
+    private lateinit var binding: ActivityBookroomBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -130,17 +128,8 @@ class BookRoomActivity : DaggerAppCompatActivity(), DatePickerDialog.OnDateSetLi
     private fun loadRoomListWithTime(time: String) {
         // still not binding recycler
         viewModel.listRoom.observe(this, Observer {
-
             val adapter = roomList.adapter as RoomListAdapter
-            if (adapter.roomList.isEmpty()) {
-                adapter.addAll(it)
-                adapter.defaultRoomList = it.toList() // default list for reset
-                adapter.setTime(time)
-            } else {
-                adapter.setTime(time)// set tim for availability process
-                adapter.notifyDataSetChanged()
-            }
-
+            adapter.onTimeChooseSet(it,time)
         })
 
     }
@@ -150,29 +139,22 @@ class BookRoomActivity : DaggerAppCompatActivity(), DatePickerDialog.OnDateSetLi
     // event handler after choose sort type
     override fun onChooseSortType(type: SortType) {
         val adapter = roomList.adapter as RoomListAdapter
-        var list: List<Room>? = null
 
         when (type) {
             SortType.AVAILABILITY -> {
 
-                val chooseTime = TimeUtils.getCloseTime(adapter.getTime())
-                list = adapter.roomList.sortedBy {
-                    it.availability?.get(chooseTime) != "1"
-
-                }
+                adapter.sortByAvailability()
                 Toast.makeText(applicationContext, "sorted by avail ", Toast.LENGTH_SHORT).show()
             }
             SortType.LOCATION -> {
                 //nothing
             }
             else -> {
-                list = adapter.roomList.sortedBy { it.capacity }.asReversed()
+                adapter.sortByCapacity()
                 Toast.makeText(applicationContext, "sorted by capacity ", Toast.LENGTH_SHORT).show()
             }
         }
 
-        adapter.roomList = list as List<Room>
-        adapter.notifyDataSetChanged()
     }
 
     // event handler choose reset sort
