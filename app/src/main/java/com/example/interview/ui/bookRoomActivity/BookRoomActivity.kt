@@ -5,8 +5,6 @@ package com.example.interview.ui.bookRoomActivity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
-import android.icu.text.DateFormat
-import android.icu.util.Calendar
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -25,7 +23,7 @@ import com.example.interview.ui.bookRoomActivity.supportFragment.DatePickerFragm
 import com.example.interview.ui.bookRoomActivity.supportFragment.SortSheetFragment
 import com.example.interview.ui.bookRoomActivity.supportFragment.SortType
 import com.example.interview.ui.bookRoomActivity.supportFragment.TimePickerFragment
-import com.example.interview.ui.scanQRActivity.ScannedBarcodeActivity
+import com.example.interview.ui.scanQRActivity.ScanQRActivity
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_bookroom.*
 import javax.inject.Inject
@@ -54,18 +52,25 @@ class BookRoomActivity : DaggerAppCompatActivity(), DatePickerDialog.OnDateSetLi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_bookroom)
-        setSupportActionBar(toolbar)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_bookroom)
+        setSupportActionBar(binding.toolbar)
         viewModel = ViewModelProvider(this, providerFactory).get(BookRoomViewModel::class.java)
         viewModel.setup()
         binding.viewmodel = viewModel
         binding.lifecycleOwner = this
 
-        //still not binding recycler
+
         roomList.adapter = roomListAdapter
         roomList.layoutManager = LinearLayoutManager(this)
 
+        // observe timeText change
+        viewModel.timeText.observe(this, Observer {
+            // update adapter chooseTime
+            roomListAdapter.chooseTime = it
+        })
+
     }
+
 
     fun chooseDate(v: View) {
         if (!datePickerFragment.isAdded) {
@@ -95,7 +100,7 @@ class BookRoomActivity : DaggerAppCompatActivity(), DatePickerDialog.OnDateSetLi
         return when (item.itemId) {
             R.id.camera -> {
                 Toast.makeText(applicationContext, "Camera", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this@BookRoomActivity, ScannedBarcodeActivity::class.java))
+                startActivity(Intent(this@BookRoomActivity, ScanQRActivity::class.java))
                 false
             }
             else -> false
@@ -105,52 +110,41 @@ class BookRoomActivity : DaggerAppCompatActivity(), DatePickerDialog.OnDateSetLi
 
     // event handler for date picker
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        val c = Calendar.getInstance()
-        c.set(Calendar.YEAR, year)
-        c.set(Calendar.MONTH, month)
-        c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-        val currentDateString = DateFormat.getDateInstance(DateFormat.FULL).format(c.time)
-        viewModel.dateText.value = currentDateString
+        viewModel.setDate(year, month, dayOfMonth)
     }
 
     // event handler for time picker
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-        // add "0" to time if necessary
-        val minuteString: String = if (minute < 10) "0$minute" else "$minute"
-        val hourString: String = if (hourOfDay < 10) "0$hourOfDay" else "$hourOfDay"
 
-        val time = "$hourString:$minuteString"
+        viewModel.setTime(hourOfDay, minute)
 
-        viewModel.timeText.value = time
-        loadRoomListWithTime(time)
-    }
+        // only observe first time when adapter list is empty
+        if (roomListAdapter.currentList.isEmpty()) {
+            viewModel.roomList.observe(this, Observer {
+                roomListAdapter.submitList(it)
+            })
 
-    private fun loadRoomListWithTime(time: String) {
-        // still not binding recycler
-        viewModel.listRoom.observe(this, Observer {
-            val adapter = roomList.adapter as RoomListAdapter
-            adapter.onTimeChooseSet(it,time)
-        })
+        } else {
+            roomListAdapter.notifyDataSetChanged()
+        }
 
     }
-
-
 
     // event handler after choose sort type
     override fun onChooseSortType(type: SortType) {
-        val adapter = roomList.adapter as RoomListAdapter
 
         when (type) {
             SortType.AVAILABILITY -> {
 
-                adapter.sortByAvailability()
+                viewModel.sortByAvailability()
                 Toast.makeText(applicationContext, "sorted by avail ", Toast.LENGTH_SHORT).show()
             }
             SortType.LOCATION -> {
                 //nothing
+                Toast.makeText(applicationContext, "sorted by location: not yet ", Toast.LENGTH_SHORT).show()
             }
             else -> {
-                adapter.sortByCapacity()
+                viewModel.sortByCapacity()
                 Toast.makeText(applicationContext, "sorted by capacity ", Toast.LENGTH_SHORT).show()
             }
         }
@@ -159,8 +153,8 @@ class BookRoomActivity : DaggerAppCompatActivity(), DatePickerDialog.OnDateSetLi
 
     // event handler choose reset sort
     override fun onReset() {
-        (roomList.adapter as RoomListAdapter).resetSort()
-        Toast.makeText(applicationContext, "Reset", Toast.LENGTH_SHORT).show()
+        viewModel.resetSort()
+        Toast.makeText(applicationContext, "Reset sort", Toast.LENGTH_SHORT).show()
     }
 
 }

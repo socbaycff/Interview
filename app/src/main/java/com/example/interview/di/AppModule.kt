@@ -12,7 +12,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 @Module
 abstract class AppModuleBinding {
 
-    // bind into interface
 
     @Binds
     abstract fun bindIRestAPIUtil(restAPIUtil: RestAPIUtil): iRestAPIUtil

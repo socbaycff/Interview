@@ -33,7 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.scanQRActivity.ScannedBarcodeActivity" />
+        <activity android:name=".ui.scanQRActivity.ScanQRActivity" />
     </application>
 
 </manifest>

@@ -4,17 +4,29 @@ import android.content.Intent
 import android.os.Bundle
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.example.interview.R
-import kotlinx.android.synthetic.main.activity_booking_result.*
+import com.example.interview.databinding.ActivityScanResultBinding
+import com.example.interview.di.ViewModelProviderFactory
+import dagger.android.support.DaggerAppCompatActivity
+import kotlinx.android.synthetic.main.activity_scan_result.*
+import javax.inject.Inject
 
 
-class ScanResultActivity : AppCompatActivity() {
+class ScanResultActivity : DaggerAppCompatActivity() {
+
+    @Inject
+    lateinit var providerFactory: ViewModelProviderFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_booking_result)
+         val binding = DataBindingUtil.setContentView<ActivityScanResultBinding>(this,R.layout.activity_scan_result)
         val webView = webView
+
+        val viewModel = ViewModelProvider(this, providerFactory).get(ScanResultViewModel::class.java)
+        binding.viewmodel = viewModel
+        binding.lifecycleOwner = this
 
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(webView: WebView, url: String): Boolean {

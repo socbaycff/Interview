@@ -10,7 +10,4 @@ data class RoomEntity(@PrimaryKey var name: String,
                       @ColumnInfo(name = "capacity")
                        var capacity:Int,
                       @ColumnInfo(name = "level")
-                       var level: Int,
-                      @ForeignKey(entity = AvailabilityEntity::class,childColumns = [""],parentColumns = [""])
-                      @ColumnInfo(name = "availability")
-                       var availability: MutableMap<String, String>)
+                       var level: Int)
